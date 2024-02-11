@@ -1,0 +1,16 @@
+{
+    "@model@simple_cls": {
+        "active": "none",
+        "embedding_size": "@$.@glove.hidden_size, @$.@bert.hidden_size @lambda x, y: x+y",
+        "@embedding@glove": {
+            "hidden_size": 300,
+            "vocab_size": 5000
+        },
+        "@embedding@bert": {
+            "hidden_size": 768
+        }
+    },
+    "_G": {
+        ""
+    }
+}

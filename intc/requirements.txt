@@ -1,0 +1,8 @@
+pytest>=7.0
+attrs>=23.1
+cattrs>=23.1
+hjson>=3.0
+pyyaml>=6.0
+click>=8.0
+hjson>=3.0
+platformdirs>=4.2.0

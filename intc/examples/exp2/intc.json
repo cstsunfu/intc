@@ -1,0 +1,7 @@
+{
+    "module": ["config/module"],
+    "entry": ["config"],
+    "src": [
+        "src"
+    ]
+}
