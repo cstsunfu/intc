@@ -1,0 +1,37 @@
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "intc_lsp"
+authors = [
+    {name = "cstsunfu", email = "cstsunfu@gmail.com"},
+]
+description = "intc-lsp: intc language server"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["intc", "lsp", "intc-lsp"]
+license = {text = "Apache License 2.0" }
+classifiers = [
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "License :: OSI Approved :: Apache Software License"
+]
+dependencies = [
+    "intc==0.1",
+    "platformdirs>=4.2.0",
+    "pygls>=1.1",
+    "tree-sitter>=0.21.1"
+]
+dynamic = ["version"]
+
+[tool.setuptools]
+packages = ["intc_lsp", "intc_lsp.lib"]
+include-package-data = true
+
+[project.scripts]
+intc-lsp = "intc_lsp.cli:cli"
+
+[tool.setuptools.package-data]
+"intc_lsp.lib" = ["*.so"]

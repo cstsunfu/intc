@@ -1,0 +1,62 @@
+{
+    "name": "intc-lsp",
+    "description": "intc language server",
+    "author": "cstsunfu",
+    "repository": "https://github.com/cstsunfu/intc",
+    "icon": "pics/icon.png",
+    "license": "Apache-2.0",
+    "version": "0.1.0",
+    "publisher": "cstsunfu",
+    "engines": {
+        "node": ">=16.17.1",
+        "vscode": "^1.78.0"
+    },
+    "extensionDependencies": [
+        "ms-python.python"
+    ],
+    "categories": [
+        "Programming Languages"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "intclsp.server.restart",
+                "title": "Restart Language Server",
+                "category": "intc"
+            },
+            {
+                "command": "intclsp.server.executeCommand",
+                "title": "Execute Command",
+                "category": "intc"
+            }
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "Server Configuration",
+            "properties": {}
+        }
+    },
+    "main": "./out/extension",
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p .",
+        "watch": "tsc -p . -w"
+    },
+    "devDependencies": {
+        "@types/node": "^16.11.6",
+        "@types/semver": "^7.5.0",
+        "@types/vscode": "^1.78.0",
+        "@typescript-eslint/eslint-plugin": "^5.3.0",
+        "@typescript-eslint/parser": "^5.3.0",
+        "eslint": "^8.2.0",
+        "typescript": "^5.1.0"
+    },
+    "dependencies": {
+        "@vscode/python-extension": "^1.0.4",
+        "semver": "^7.5.4",
+        "vscode-languageclient": "^8.1.0"
+    }
+}
