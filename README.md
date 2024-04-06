@@ -11,21 +11,21 @@ A Python Config Manager for Humans
 <span style="width:70%;display:inline-block">
 
 ![main](./pics/vsc_main.png)
+
 </div>
 
 <h4 align="center">
     <p>
-        <b>English</b> |
-        <a href="https://github.com/cstsunfu/intc/blob/main/README_zh.md">简体中文</a>
+        <b>简体中文</b> |
+        <a href="https://github.com/cstsunfu/dlk/blob/main/README_en.md">English</a>
     </p>
 </h4>
 
-
-* [Installation](#installation)
+* [安装](#安装)
 * [Feature List](#feature-list)
 * [Intc Use Case](#intc-use-case)
-    * [Parameter reference and lambda syntax](#parameter-reference-and-lambda-syntax)
-    * [Parameter search](#parameter-search)
+    * [参数引用及lambda语法](#参数引用及lambda语法)
+    * [参数搜索](#参数搜索)
     * [DataClass && Json Schema](#dataclass-json-schema)
 * [Intc-LSP](#intc-lsp)
     * [Hover Document](#hover-document)
@@ -33,18 +33,17 @@ A Python Config Manager for Humans
     * [Completion](#completion)
     * [Goto/Peek Definition](#gotopeek-definition)
 
-`intc` is a powerful intelligent config management tool that provides features such as module inheritance, nested modules, parameter references, hyperparameter search, and support for dynamic parameter calculation using lambda expressions.
 
-The accompanying Language Server Protocol (`intc-lsp`) enhances our editing and browsing experience, tightly integrating configuration files with Python code. `intc-lsp` helps you conveniently access Python semantic information while writing and reading `intc` files, offering features such as error prompts, parameter completion, intelligent navigation, and parameter help document display.
+`intc`是一个功能强大的智能config配置管理工具，它不仅为我们的配置文件提供模块继承、模块嵌套、参数引用、超参搜索，还支持基于`lambda`表达式的复杂参数动态计算等功能。
 
-In addition to being used for config files, `intc` can also be directly used as a `dataclass`. It can convert `dataclasses` defined using `intc` into JSON schemas for data type constraints, and can also perform data checks on JSON data, including return values from tools like `LLM`, generating error prompts for iterative optimization in `LLM`.
+而`intc`的配套Language Server Protocol（`intc-lsp`）则让我们的编辑浏览体验更加丝滑，它将配置文件与`python`代码紧密联合，`intc-lsp`可以帮助你在书写和阅读`intc`文件时方便的获取`python`的语义信息，提供错误提示、参数补全、智能跳转和参数帮助文档展示的功能。
 
+除了用于`config`，`intc`还可以直接作为`dataclass`使用，它可以将我们使用`intc`定义的`dataclass`转化为`json schema`用于如`LLM`的数据类型约束，还可以对如`LLM`返回值在内的`json`数据进行数据检查并生成错误提示用于`LLM`的迭代优化。
 
-### Installation
+### 安装
 
-1. Prepare a Python environment, requiring `python>=3.8`, and currently tested only on `Linux` and `Mac`. Support for `Windows` may have issues.
-2. Install `intc` and `intc-lsp`. If you don't need features like intelligent completion, you can only install `intc`.
-
+1. 准备`python`环境，要求`python>=3.8`，且目前只在`Linux`和`Mac`上面进行了测试，`Windows`的支持可能存在问题
+2. 安装`intc`和`intc-lsp`，如果不需要使用智能补全等功能可以只安装`intc`
 
 ```bash
 # install from pypi
@@ -52,9 +51,7 @@ pip install intc
 pip install intc-lsp
 ```
 
-
-Or from source:
-
+或直接源码安装
 ```bash
 cd intc/
 pip install .
@@ -62,122 +59,107 @@ cd ../lsp
 pip install .
 ```
 
-3. Installing Intelligent Completion Plugins
+3. 安装智能补全插件(Plugins)
 
-`intc` provides a generic Language Server Protocol (`LSP`), theoretically usable with any editor or `IDE` that supports `LSP`. However, I primarily use `(neo)vim` for most of my work and occasionally `vscode`, so the adaptation has been done for these two editors.
+`intc`提供了一个通用的Language Server Protocol（`LSP`），理论上只要你使用的编辑器或`IDE`支持`LSP`就可以使用，但是我平时主要使用`(neo)vim`，偶尔用一下`vscode`，因此目前只在这两种编辑器上做了适配
 
-* Neovim
+* neovim
 
-`Neovim` is powerful and easy to extend, and the community has provided very friendly support for `LSP`. Refer to `plugins/neovim` for specific instructions.
+`neovim`功能强大且易于扩展，社区已经对`LSP`提供了非常友好的支持，具体参考`plugins/neovim`
 
-* VSCode
+* vscode
+  `vscode`也可以通过安装`intc-lsp`对应的插件来获取`lsp`的支持，具体参考 `plugins/vscode`
 
-`VSCode` can also support `LSP` by installing the corresponding plugin for `intc-lsp`. Refer to `plugins/vscode` for specific instructions.
+* 其他IDE与编辑器
 
-* Other IDEs and Editors
-
-  Assistance from experienced individuals is needed to improve documentation for other IDEs and editors.
+  需要有相关经验的同学帮忙完善文档
 
 ### Feature List
 
-Below is a brief introduction to some of the main features. For detailed usage, you can jump to the corresponding use case.
+下面是一些主要功能的简单介绍，具体用法可以跳转到对应的use case进行查看
 
-* Module Inheritance
-    * `intc` Python classes can inherit from each other like normal Python classes.
-    * `intc` config files are parameter instantiations of Python classes and can also be seen as inheriting from Python classes.
-    * Additionally, in some complex config files, there can also be inheritance relationships between configs.
+* 模块继承
+    * intc的python类之间可以和正常的python类一样进行继承
+    * intc的config文件则是python类的实例化参数，同样可以看做是继承自Python类
+    * 除此之外在一些复杂的config文件中config之间也可以存在继承关系.
+* 模块嵌套，模块之间可以进行嵌套，一个更高级别的模块除了自己的参数之外还可以包含其他子模块，如在训练神经网络的任务中一个trainer除了自己的一些参数之外还可以包含model、optimizer和schedule等子模块
+* 参数引用，一个参数可以依赖一个或多个其他参数的值，支持lambda动态计算参数的值
+* 参数搜索，在很多任务中我们有多种参数组合，intc以笛卡尔积的形式展开所有的参数组合
+* dataclass，作为dataclass可以直接作为某个模块的参数类、可以生成json schema、可以对参数进行检查
 
-* Nested Modules
-    * Modules can be nested, with a higher-level module containing parameters as well as other sub-modules. For example, in a task of training neural networks, a trainer can contain not only its parameters but also sub-modules like model, optimizer, and scheduler.
-
-* Parameter References
-    * A parameter can depend on the value of one or more other parameters, supporting lambda dynamic parameter value calculation.
-
-* Parameter Search
-    * In many tasks, there are multiple parameter combinations. `intc` expands all parameter combinations in the form of Cartesian products.
-
-* Dataclass
-    * Can be used directly as a dataclass for a module's parameter class, can generate JSON schemas, and can perform parameter checks.
-
-* Config Help Document
-    * `intc-lsp` provides parameter hover prompts, displaying parameter help documents when the pointer is placed over a parameter.
-
-* Config Error Prompt
-    * `intc-lsp` checks if your parameter fillings are correct.
-
-* Config Parameter Completion
-    * `intc-lsp` provides semantic completion while editing config files.
-
-* Config Parameter Navigation
-    * `intc-lsp` provides `goto/peek definition` support for browsing or editing config files, leveraging Python source code.
+* config帮助文档，intc-lsp提供参数hover提示，当指针放到参数上时展示参数的帮助文档
+* config错误提示，intc-lsp检查你的参数填写是否正确
+* config参数补全，intc-lsp在你编辑config文件时进行语义补全
+* config参数跳转，intc-lsp为你在浏览或编辑config文件时提供`goto/peek definition` python源码提供支持
 
 * etc.
 
 ### Intc Use Case
 
-We will start by introducing the basic usage of `intc` with an example from `intc/examples/exp1`.
+我们将以`intc/examples/exp1`中的例子开始来介绍intc的基本用法
 
-Example structure:
+样例结构：
 
 ```
-├── config                         -- config file，support the json or jsonc，you should point the path to config in the .intc.json
+├── config                         -- config文件，目前支持json和jsonc文件，需要在.intc.json中指定config所在目录
 │   ├── model.json
 │   └── model_search.jsonc
-├── .intc.json                     -- for intc
+├── .intc.json                     -- intc需要的meta数据
 ├── run.py                         -- your own code
 └── src                            -- your project
     └── __init__.py
 ```
 
-Compared with an ordinary python project, the intc project requires a `.intc.json` file to describe some `meta` data of the project. The following is the configuration in this exp:
+和一个普通的python项目相比，intc项目需要一个`.intc.json` 文件来描述项目的一些`meta`数据, 下面是这个exp中的配置:
 
 ```.intc.json
 {
-    // "module": ["config/module"],  // the directory for submodule config, relative to currently directory, for this example there is no submodule
-    "entry": ["config"],                 // the main config file path
-    "src": [                           // the python module used for this project
+    // "module": ["config/module"],  // submodule所在目录, 相对于当前目录, 这个exp中没有submodule
+    "entry": ["config"],                 // config所在目录, 相对于当前目录
+    "src": [                           // config文件中用到的python模块，需要可以直接通过python import
         "src"
     ]
 }
 
 ```
 
-The Python code using `intc` is very similar to `dataclass`. Compared with original dataclass, it provides functions such as numerical checking, model registration, and json schema generation, etc.
+而使用intc的python代码则与dataclass非常相似，相比于python自带的dataclass提供了如数值检查、模型注册、生成json schema等功能
 
 ```python
 from intc import (
-    MISSING,            # MISSING is a const value, in intc it always be `???`
-    Base,               # all the intc config class/dataclass will inherit this class
-    BoolField,          # bool field
+    MISSING,            # MISSING是一个常量(在intc中的值为`???`)表示参数缺失，需要在实例化config时提供
+    Base,               # 所有的intc dataclass 都继承该类（可以隐式继承）
+    BoolField,          # 这些bool field
     DictField,          # dict field
     FloatField,         # ...
     IntField,
     AnyField,
     ListField,
-    NestField,          # nested field, it's is a dict that can accept the constraints of the key and value
+    NestField,          # 嵌套field，相比dict可以提供更多的类型检查、智能补全等功能
     StrField,
     SubModule,
-    cregister,          # register for intc, you can registed a dataclass to cregister, the key is a tuple (module_type, module_name))
+    cregister,          # cregister注册intc实例(支持二级命名, <module_type, module_name> )，用于实例的索引（通过<module_type, module_name>直接获取对应的model类，config中也会使用注册名来定位对应的model类
+)
 
 
-@cregister("model", "simple_cls")  # registed the Model as ("model", "simple_cls"), which `module_type is model`, `module_name is simple_cls`
-class Model(Base):                 # inherit the Base class, or you can just omit it, like the BertEmbedding at below
-    embedding_combine_method = StrField( # the intc attribute
-        value="concat",                  # default value
-        options=["concat", "concat_linear"], # the value must be one of these
+@cregister("model", "simple_cls")  # cregister将Model注册为intc类，`module_type`为`model`, `module_name`为`simple_cls`
+class Model(Base):                 # 显式继承自Base，这里也可以不显式继承，register过程会自动执行这个过程，显式的继承可以提供更好的语义补全
+    embedding_combine_method = StrField( # dataclass的属性定义
+        value="concat",                  # 默认值
+        options=["concat", "concat_linear"], # options 表示值必须是这几个里面的一个
         help="the combine method, just `concat` or use `linear` on the concated embedding",
     )
     embedding_size = IntField(
-        value=MISSING, help="the sum of bert and glove embedding size" # if the default value is MISSING, you must provide one when you init it
+        value=MISSING, help="the sum of bert and glove embedding size" # 这里的default value为MISSING，需要在实例化时提供
     )
     active = StrField(
         value="relu",
         options=["relu", "tanh", "sigmoid", "none"],
         help="the activation function",
     )
-    submodule = SubModule(   # submodules, you can nested other dataclass/intc config in it
+    submodule = SubModule(   # 子模型，可以嵌套其他模型的定义，这里的子模型可以有多个，引用子模型需要用到这些子模型的注册名
         value={},
-        suggestions=[        # suggestions means some suggestion submodules, it's useful for intc-lsp to complete
+        suggestions=[        # suggestions 表示推荐的一些值, 对于代码阅读和intc-lsp的语义解析有帮助
             "embedding",
             "decode",
         ],
@@ -196,16 +178,15 @@ class BertEmbedding:
     )
 ....
 ```
-
-In the actual development process, we often use config files to configure business logic, and `json` (and its derived formats, such as `jsonc`) is very suitable for editing configuration files. `intc` combined with `intc-lsp` provides a very good solution for this. The following is an example of configuring an existing dataclass:
+实际开发过程中，我们往往使用config文件对业务逻辑进行配置，而json(及其衍生格式，如jsonc)非常适合用来编辑配置文件，`intc`配合`intc-lsp`对此提供了非常好的支持, 下面是针对已有的dataclass进行配置的例子:
 
 ```jsonc
-// file config/model.jsonc
+// 文件 config/model.jsonc
 {
-    "@model@simple_cls": {  // Indicates who is configuring, in the format of @module_type@module_name @model@simple_cls corresponding to the `Model` registered with this name
+    "@model@simple_cls": {  // 表明是对谁进行配置，格式为@module_type@module_name @model@simple_cls 对应被注册为这个名称的`Model`
         "active": "none",
-        "embedding_size": "@$.@glove.hidden_size, @$.@bert.hidden_size @lambda x, y: x+y", // The value here is calculated by dynamic lambda. The value of embedding_size is the sum of @embedding@glove.hidden_size and @embedding@bert.hidden_size. For the syntax of lambda, please see the introduction to lambda in this manual.
-        "@embedding@glove": { // submodule, submodule also recognized as @module_type@module_name
+        "embedding_size": "@$.@glove.hidden_size, @$.@bert.hidden_size @lambda x, y: x+y", // 这里的值为动态的lambda计算的，喊一声 embedding_size的值为@embedding@glove.hidden_size和@embedding@bert.hidden_size 的和， 关于lambda的语法请看本说明里面关于lambda的介绍
+        "@embedding@glove": { // submodule, submodule 同样以@module_type@module_name作为标识
             "hidden_size": 300,
             "vocab_size": 5000
         },
@@ -215,17 +196,22 @@ In the actual development process, we often use config files to configure busine
     }
 }
 ```
+```python
+# 文件 main.py
+import exp
 
-#### Parameter reference and lambda syntax
+```
+#### 参数引用及lambda语法
 
-We often encounter that the output of an encode module has the same dimension as the input of the decode module. In the configuration file, we hope that the values of these two parameters are always consistent. Intc supports one parameter being a reference to another parameter, so that we only if one of the parameters needs to be modified, the value of the other parameter is also modified simultaneously.
+我们经常会遇到如一个encode模块的输出和decode模块的输入的维度相同，在配置文件中我们希望这两个参数的值始终保持一致，intc支持一个参数是另一个参数的引用，这样我们只需要修改其中的一个参数另一个参数的值也同步被修改了。
 
-Sometimes the value of one of our parameters depends on multiple other parameters. For example, in a multi-encode model, the input dimension of the decode module is the sum of the dimensions output by all encode models. For such complex references, intc provides `lambda` Supports complex dynamic value calculations.
 
-Before introducing `lambda` expressions, we first introduce the reference rules of parameters:
 
-Let’s take the following config as an example:
+有时我们的一个参数的值依赖于多个其他参数，如在一个多encode的模型中，decode模块的输入维度是所有encode模型输出的维度的和，针对这种复杂的引用，intc提供`lambda`支持复杂的动态值计算.
 
+在介绍`lambda`表达式之前，我们先对参数的引用规则进行介绍：
+
+我们以下面的config为例：
 ```json
 {
     "@parent@p": {
@@ -246,27 +232,27 @@ Let’s take the following config as an example:
     "para_a": "value_a"
 }
 ```
-We want to reference the value elsewhere when calculating `para_p_b`:
 
-The vanilla way:
+我们想要在计算`para_p_b`时引用其他位置的值:
 
-* If we want to reference the value of `para_p_a`, `para_p_a` is at the same level as the current position, we use `$` to indicate the same level, then the reference of the value of `para_p_a` at the position of `para_p_b` should be written as `$ .para_p_a`
-* If we want to refer to the value of `para_a`, `para_a` is one level above the current position, we use `$$` to represent the previous level (I believe you are smart and have discovered that each additional `$` represents the previous level) go back one more level), then the reference of the value of `para_a` at the position of `para_p_b` should be written as `$$.para_a`
-* If we want to reference the value of `para_li_a`, we can find that `para_li_a` is located at the next level of `@children@li` at the same level as the current position, so the value of `para_li_a` should be referenced at the position of `para_p_b` Written as `$.@children@li.para_li_a`
+朴素的方式：
 
-Simplified expression:
+* 如果我们想要引用`para_p_a`的值，`para_p_a`与当前位置处于同级，我们用`$`来表示同级，那`para_p_a`的值在`para_p_b`位置的引用应该写为`$.para_p_a`
+* 如果我们想要引用`para_a`的值，`para_a`处于当前位置的上一级，我们用`$$`来表示上一个级别（相信聪明的你已经发现每多一个`$`则表示往上多回溯一个级别)，那`para_a`的值在`para_p_b`位置的引用应该写为`$$.para_a`
+* 如果我们想要引用`para_li_a`的值，则我们可以发现`para_li_a`位于当前位置同级的`@children@li`的下一级，所以`para_li_a`的值在`para_p_b`位置的引用应该写为`$.@children@li.para_li_a`
 
-Since expressions such as `@children@li` as module names are often very long and inconvenient to write, we often only need the prefix or suffix of the module name to distinguish a module, so the last example above is in `para_p_b` The value of `para_li_a` quoted everywhere can be written as `$.@li.para_li_a`, where `@children@li` is simplified to `@li` without causing ambiguity. It should be noted that the simplification here must be The prefix or suffix of the original expression can only be used in module names (that is, it can only be staged with special symbols such as `@`). This is done to reduce the difficulty of reading and reduce the occurrence of ambiguity.
+简化表达：
 
-Anchor point:
+由于作为模块名的如`@children@li`的表达往往很长，书写起来不方便，而往往我们仅需要这个模块名的前缀或后缀就能区分一个模块，因此上面的最后例子在`para_p_b`处引用`para_li_a`的值哈可以写为`$.@li.para_li_a`, 这里将`@children@li`简化成了`@li`而不带来歧义，需要注意的是这里的简化必须为原表达的前缀或后缀，且只能用于模块名（也就是说只能以`@`等特殊符号进行阶段），这么做是为了降低阅读难度，减少歧义的发生。
 
-And if we want to reference the value of `para_wang_a` at `para_p_b`, the path here also has to go through a module name `@children@wang`. We cannot use the above simplified expression technique, because no matter we choose the prefix `@children` (the prefix of `@children@li`) or the suffix `@wang` (the prefix of `@wang@old` is `@wang`) will cause ambiguity, so we can only honestly write down the full Is it famous? Not so. In order to make some long-distance references more convenient, intc also supports `global anchors` to provide convenience for remote dependencies. In this example, we see that there is a` inside `@children@wang` _anchor` keyword, we can reference the value of `_anchor` at any position to refer to the sibling element at its position. Therefore, at `para_p_b` we can refer to the value of `para_wang_a` through `cwang.value_wang_a` .
+锚点：
 
-It should be noted that there can be multiple `_anchor`, but the same name must not appear. Each value of `_anchor` must be globally unique, so do not set `_anchor` in a submodule.
+而如果我们在`para_p_b`处想要引用`para_wang_a`的值，这里的路径同样要经过一个模块名`@children@wang`我们就不能使用上面的简化表达的技巧，这是因为无论我们选择前缀`@children`(`@children@li`的前缀)还是后缀`@wang`(`@wang@old`的前缀是`@wang`)都会产生歧义，那我们只能老老实实的写下全名了吗? 并非如此，intc为了让一些长距离的引用更加方便，还支持`全局锚点`来为远程依赖提供方便，在这个例子中，我们看到 `@children@wang`内部有一个`_anchor`关键词，我们可以在任意位置引用`_anchor`所在位置的值来引用它所在位置的同级元素，因此，在`para_p_b`处我们可以通过`cwang.value_wang_a`来引用`para_wang_a`的值。
 
-Syntax for value references:
-The reference of intc is realized through `@lambda` expression. The reference rules are:
+需要注意的是`_anchor`可以有多个，但是不得出现同名`_anchor`每一个的值必须是全局唯一的, 因此不要在子模块中设置`_anchor`
 
+值引用的语法：
+intc的引用是通过`@lambda`表达式来实现的，引用规则为：
 ```
 {
     "para1": "value1",
@@ -274,25 +260,22 @@ The reference of intc is realized through `@lambda` expression. The reference ru
 }
 ```
 
-In addition to being used for value references, `lambda` can also be used in very complex situations. The following are the `lambda` syntax types and usage examples supported by intc:
 
-1. General Grammar
+`lambda`除了用于值引用以外，还可以用于非常复杂的情况，下面是intc支持的`lambda`语法类型及使用示例:
 
-The most common syntax for intc's `lambda` is
+1. 通用语法
+
+intc 的`lambda`最通用的语法是
 
 ```
 @para_1, @para_2, ...@para_n  @lambda x1, x2, ...xn: use x1 to xn calc the value
 |__________________________|  |________________________________________________|
              │                                     │
-  Here you need to pass a            The lambda expression here follows
-  lambda parameter that              Python's lambda syntax rules. The
-  corresponds to the                 parameters passed in are the
-  parameters of the                  corresponding parameter names.
-  subsequent lambda
-  expression <para_1 -> x1>.
-  The expression of each
-  para here follows the
-  reference rules.
+  这里是要传个lambda的参数         这里的lambda表达式遵循python的lambda语法规则
+  与后面lambda表达式的参数         传入的参数就是前面对应的参数名
+  一一对应<para_1 -> x1>..
+  这里的每个para的表示遵循
+  引用规则
 ```
 
 ```json
@@ -302,27 +285,26 @@ The most common syntax for intc's `lambda` is
     "para3": "@$.para1, @$.para2 @lambda x, y: x+y"
 }
 ```
-Here `para3` is a value that needs to be calculated by `lambda`. The calculation result is the value of `para1` and `para2` and `3`
+这里的`para3`是一个需要`lambda`计算的值，计算结果为`para1`与`para2`的值和`3`
 
-2. `lambda` calculation
-Sometimes we simply want to calculate a value through `lambda` without referencing other parameters, then we can write like this:
-
+2. `lambda` 计算
+有些时候我们单纯的只是想通过`lambda`来计算一个值，而不需要引用其他参数，那我们可以这么写：
 ```json
 {
     "para1": "@lambda _: list(range(100))"
 }
 ```
 
-At this time, the value of `para1` is still a `lambda` expression, but the input parameter of this expression is empty, and the value of this expression is `[0, 1, 2..., 98, 99]`
+此时`para1`的值仍然是一个`lambda`表达式，但是这个表达式的输入参数是空的，这个表达式的值为`[0, 1, 2..., 98, 99]`
 
-3. Value reference through lambda
+3. 通过lambda进行值引用
 
-The syntax is described in the Parameter Reference section
+语法已在参数引用部分进行介绍
 
 
-#### Parameter search
+#### 参数搜索
 
-When doing experiments, we need to verify the combination of multiple parameters. `intc` provides us with the ability to parameter grid search. It combines each search condition in the form of a Cartesian product and returns a config list.
+在做实验时，我们需要验证多种参数的组合，`intc`为我们提供了参数grid search的能力，针对每个搜索条件以笛卡尔积的形式进行组合，返回一个config list
 
 ```jsonc
 // data.json
@@ -351,11 +333,12 @@ from intc import Parser
 assert len(Parser(json.load(open('data.json')).parser())) == 81
 ```
 
-As shown in the example, the value searched for by the argument of `intc` can be a `list` or a `lambda` expression returning a `list`, but the `lambda` expression currently used in `_search` is currently Only value calculation is supported, and other parameters cannot be referenced to participate in the calculation. The reason for this restriction is that `_search` itself may change the structure of config, and the reference must be made when the config structure is fixed. So the calculation of the actual reference happens after `_search` generates the fixed config
+如示例中所示，`intc`的参数搜索的值可以是一个`list`也可以是一个`lambda`表达式返回一个`list`，但是目前在`_search`中使用的`lambda`表达式目前只支持值计算，不可以引用其他的参数参与计算，有这个限制的原因是`_search`本身有可能改变config的结构，而引用必须在config结构固定时才可以。所以实际引用的计算是在`_search`生成固定的config之后发生
 
 #### DataClass && Json Schema
 
-In addition to being used as a config management tool, `intc` can also be used as a `dataclass`. In particular, `intc`, in addition to supporting the import and export of general `json` data, can also export `json schema` according to the definition. , which is very useful for some specific scenarios such as agreeing on the input and output format of a large model.
+`intc`除了可以作为config管理工具使用之外，也可以当做`dataclass`来使用，特别是`intc`除了支持一般的`json`数据的导入导出之外，还可以根据定义导出`json schema`，这对于一些特定的场景如约定大模型的输入输出格式时非常有用
+
 
 ```python
 import json

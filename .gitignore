@@ -5,6 +5,7 @@ intc/intc.egg-info/**
 intc/test.py
 lsp/build/**
 lsp/dist/**
+lsp/clean.py
 lsp/intc_lsp.egg-info/**
 **/*.pyc
 **/*.so
