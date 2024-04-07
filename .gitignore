@@ -19,3 +19,4 @@ plugins/vscode/*.vsix
 plugins/vscode/tsconfig.tsbuildinfo
 **/__pycache__/**
 **/log.log
+**/**.vsix

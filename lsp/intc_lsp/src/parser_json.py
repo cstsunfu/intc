@@ -4,9 +4,17 @@
 # LICENSE file in the root directory of this source tree.
 
 import os
+import sys
 from typing import Dict, List, Optional, Union
 
 from tree_sitter import Language, Node, Parser
+
+if sys.platform == "win32":
+    sys_post_fix = "win"
+elif sys.platform == "darwin":
+    sys_post_fix = "mac"
+else:
+    sys_post_fix = "linux"
 
 
 class JsonParser(object):
@@ -18,7 +26,7 @@ class JsonParser(object):
         dynamic_lib_path = os.path.join(
             os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
             "lib",
-            "json_ts.so",
+            f"json_{sys_post_fix}_ts.so",
         )
         self._parser.set_language(Language(dynamic_lib_path, "json"))
         # self._parser.set_language(Language('../build/json_ts.so', 'json'))

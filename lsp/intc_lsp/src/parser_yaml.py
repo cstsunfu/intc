@@ -4,9 +4,17 @@
 # LICENSE file in the root directory of this source tree.
 
 import os
+import sys
 from typing import Dict, List, Optional, Union
 
 from tree_sitter import Language, Node, Parser
+
+if sys.platform == "win32":
+    sys_post_fix = "win"
+elif sys.platform == "darwin":
+    sys_post_fix = "mac"
+else:
+    sys_post_fix = "linux"
 
 
 class YamlParser(object):
@@ -18,7 +26,7 @@ class YamlParser(object):
         dynamic_lib_path = os.path.join(
             os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
             "lib",
-            "yaml_ts.so",
+            f"yaml_{sys_post_fix}_ts.so",
         )
         self._parser.set_language(Language(dynamic_lib_path, "yaml"))
         self.skip = {"comment"}

@@ -27,7 +27,7 @@ dependencies = [
 dynamic = ["version"]
 
 [tool.setuptools]
-packages = ["intc_lsp", "intc_lsp.lib"]
+packages = ["intc_lsp", "intc_lsp.lib", "intc_lsp.src"]
 include-package-data = true
 
 [project.scripts]

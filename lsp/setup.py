@@ -4,12 +4,20 @@
 # LICENSE file in the root directory of this source tree.
 
 import os
+import sys
 from os import PathLike, fspath, path
 from platform import system
 from tempfile import TemporaryDirectory
 from typing import List
 
 from setuptools import find_packages, setup
+
+if sys.platform == "win32":
+    sys_post_fix = "win"
+elif sys.platform == "darwin":
+    sys_post_fix = "mac"
+else:
+    sys_post_fix = "linux"
 
 
 def write_version_py():
@@ -95,11 +103,11 @@ def build_library(output_path: str, repo_paths: List[str]) -> bool:
 
 
 build_library(
-    os.path.join("intc_lsp", "lib", "json_ts.so"),
+    os.path.join("intc_lsp", "lib", f"json_{sys_post_fix}_ts.so"),
     [os.path.join("intc_lsp", "csrc", "json")],
 )
 build_library(
-    os.path.join("intc_lsp", "lib", "yaml_ts.so"),
+    os.path.join("intc_lsp", "lib", f"yaml_{sys_post_fix}_ts.so"),
     [os.path.join("intc_lsp", "csrc", "yaml")],
 )
 

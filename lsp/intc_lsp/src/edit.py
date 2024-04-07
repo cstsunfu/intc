@@ -7,10 +7,6 @@ import time
 
 from tree_sitter import Language, Parser
 
-HJSON_LANGUAGE = Language("intc_lsp/lib/json_ts.so", "json")
-parser = Parser()
-parser.set_language(HJSON_LANGUAGE)
-
 
 def get_change(old_source_byte: bytes, new_source_byte: bytes):
     """get the changed range between old source and new source
@@ -53,6 +49,10 @@ def get_change(old_source_byte: bytes, new_source_byte: bytes):
 
 
 if __name__ == "__main__":
+    HJSON_LANGUAGE = Language("intc_lsp/lib/json_ts.so", "json")
+    parser = Parser()
+    parser.set_language(HJSON_LANGUAGE)
+
     old_source_str = """
     {
         "processor": {
