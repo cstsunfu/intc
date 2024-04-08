@@ -32,6 +32,7 @@ A Python Config Manager for Humans
     * [Diagnostic](#diagnostic)
     * [Completion](#completion)
     * [Goto/Peek Definition](#gotopeek-definition)
+* [Used By](#used-by)
 
 
 `intc`是一个功能强大的智能config配置管理工具，它不仅为我们的配置文件提供模块继承、模块嵌套、参数引用、超参搜索，还支持基于`lambda`表达式的复杂参数动态计算等功能。
@@ -93,6 +94,8 @@ pip install .
 * config参数跳转，intc-lsp为你在浏览或编辑config文件时提供`goto/peek definition` python源码提供支持
 
 * etc.
+
+
 
 ### Intc Use Case
 
@@ -462,3 +465,8 @@ Json Schema Output:
 
 </span>
 </div>
+
+
+## Used By
+
+[DLK](https://github.com/cstsunfu/dlk) 是一个深度学习开发框架，一站式训练、预测、部署和展示PyTorch模型(Intc原本是DLK的一个组件)

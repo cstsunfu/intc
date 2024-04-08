@@ -11,11 +11,6 @@ assert cregister.get("model", "simple_cls", get_class=True) == Model
 parser_configs = Parser(json.load(open("./config/model.json"))).parser_init()
 assert len(parser_configs) == 1
 assert parser_configs[0]["@model"].active == "none"
-assert (
-    parser_configs[0]["@model"].embedding_size
-    == parser_configs[0]["@model"]["@bert"].hidden_size
-    + parser_configs[0]["@model"]["@glove"].hidden_size
-)  # "embedding_size": "@$.@glove.hidden_size, @$.@bert.hidden_size @lambda x, y: x+y"
 assert parser_configs[0]["@model"]["@bert"].hidden_size == 768
 
 

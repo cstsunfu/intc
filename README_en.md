@@ -32,6 +32,8 @@ A Python Config Manager for Humans
     * [Diagnostic](#diagnostic)
     * [Completion](#completion)
     * [Goto/Peek Definition](#gotopeek-definition)
+* [Used By](#used-by)
+
 
 `intc` is a powerful intelligent config management tool that provides features such as module inheritance, nested modules, parameter references, hyperparameter search, and support for dynamic parameter calculation using lambda expressions.
 
@@ -479,3 +481,7 @@ Json Schema Output:
 
 </span>
 </div>
+
+## Used By
+
+[DLK](https://github.com/cstsunfu/dlk) is a deep learning development framework that provides one-stop training, prediction, deployment and display of PyTorch models (Intc was originally a component of DLK)

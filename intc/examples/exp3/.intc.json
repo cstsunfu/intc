@@ -1,0 +1,6 @@
+{
+    "entry": ["config"],
+    "src": [
+        "src"
+    ]
+}
