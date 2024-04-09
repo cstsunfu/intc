@@ -20,6 +20,65 @@ A Python Config Manager for Humans
     </p>
 </h4>
 
+The entire project contains three parts:
+
+* `intc`: The core functional part of intc. The project will only rely on this part during run.
+* `intc-lsp`: The server side of lsp that is convenient for human use. When you edit or read the `json` file parsed by `intc`, it analyzes the relevant `Python` code and related `config` files and provides `semantic completion` and `code jump`, `parameter document`, `error correction` and other functions
+* `plugins`: Client that adapts various editors and ides to interact with `intc-lsp`
+
+```
+├── intc                                        -- intc package
+│   ├── clean.py                                --
+│   ├── examples                                -- intc examples
+│   │   └── exp**                               --
+│   ├── intc                                    -- core or intc
+│   │   ├── config.py                           --
+│   │   ├── exceptions.py                       --
+│   │   ├── loader.py                           --
+│   │   ├── parser.py                           --
+│   │   ├── register.py                         --
+│   │   ├── share.py                            --
+│   │   ├── utils.py                            --
+│   │   └── version.txt                         --
+│   └── setup.py                                --
+├── lsp                                         -- lsp package
+│   ├── intc_lsp                                --
+│   │   ├── cli.py                              -- entry of lsp
+│   │   ├── csrc                                -- c based parser
+│   │   │   ├── json                            --
+│   │   │   │   └── src                         --
+│   │   │   │       └── **.cc                   --
+│   │   │   └── yaml                            --
+│   │   │       └── src                         --
+│   │   │           └── **.cc                   --
+│   │   ├── __init__.py                         --
+│   │   ├── server.py                           -- the server api
+│   │   ├── src                                 -- core of lsp
+│   │   │   ├── edit.py                         --
+│   │   │   ├── __init__.py                     --
+│   │   │   ├── parser_json.py                  --
+│   │   │   ├── parser_yaml.py                  --
+│   │   │   ├── resolve.py                      --
+│   │   │   └── trace.py                        --
+│   │   └── version.txt                         --
+│   └── setup.py                                --
+├── pics                                        --
+│   └── ...                                     --
+├── plugins                                     --
+│   ├── neovim                                  -- neovim extension for lsp
+│   │   ├── lsp.lua                             --
+│   │   └── readme.md                           --
+│   └── vscode                                  -- vscode extension for lsp
+│       ├── package.json                        --
+│       ├── package-lock.json                   --
+│       ├── pics                                --
+│       │   └── icon.png                        --
+│       ├── README.md                           --
+│       ├── src                                 --
+│       │   └── extension.ts                    --
+│       └── tsconfig.json                       --
+└── README.md                                   --
+```
 
 * [Installation](#installation)
 * [Feature List](#feature-list)
@@ -70,11 +129,11 @@ pip install .
 
 * Neovim
 
-`Neovim` is powerful and easy to extend, and the community has provided very friendly support for `LSP`. Refer to `plugins/neovim` for specific instructions.
+`Neovim` is powerful and easy to extend, and the community has provided very friendly support for `LSP`. Refer to [neovim config](plugins/neovim) for specific instructions.
 
 * VSCode
 
-`VSCode` can also support `LSP` by installing the corresponding plugin for `intc-lsp`. Refer to `plugins/vscode` for specific instructions.
+`VSCode` can also support `LSP` by installing the corresponding plugin for `intc-lsp`. Refer to [vscode extension](plugins/vscode) for specific instructions.
 
 * Other IDEs and Editors
 

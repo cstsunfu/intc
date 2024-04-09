@@ -21,6 +21,67 @@ A Python Config Manager for Humans
     </p>
 </h4>
 
+整个项目包含三个部分:
+
+* `intc`: intc的核心功能部分, config manager和dataclass的核心，项目实际运行中只会依赖这一部分
+* `intc-lsp`: 方便人类使用的lsp的server端，在你编辑或阅读由`intc`进行解析的`json`文件时，分析相关python代码和相关的config文件并提供语义补全、代码跳转、参数文档、纠错等功能
+* `plugins`: 适配各类编辑器、IDE与`intc-lsp`进行交互的Client端
+
+```
+├── intc                                        -- intc package
+│   ├── clean.py                                --
+│   ├── examples                                -- intc examples
+│   │   └── exp**                               --
+│   ├── intc                                    -- core or intc
+│   │   ├── config.py                           --
+│   │   ├── exceptions.py                       --
+│   │   ├── loader.py                           --
+│   │   ├── parser.py                           --
+│   │   ├── register.py                         --
+│   │   ├── share.py                            --
+│   │   ├── utils.py                            --
+│   │   └── version.txt                         --
+│   └── setup.py                                --
+├── lsp                                         -- lsp package
+│   ├── intc_lsp                                --
+│   │   ├── cli.py                              -- entry of lsp
+│   │   ├── csrc                                -- c based parser
+│   │   │   ├── json                            --
+│   │   │   │   └── src                         --
+│   │   │   │       └── **.cc                   --
+│   │   │   └── yaml                            --
+│   │   │       └── src                         --
+│   │   │           └── **.cc                   --
+│   │   ├── __init__.py                         --
+│   │   ├── server.py                           -- the server api
+│   │   ├── src                                 -- core of lsp
+│   │   │   ├── edit.py                         --
+│   │   │   ├── __init__.py                     --
+│   │   │   ├── parser_json.py                  --
+│   │   │   ├── parser_yaml.py                  --
+│   │   │   ├── resolve.py                      --
+│   │   │   └── trace.py                        --
+│   │   └── version.txt                         --
+│   └── setup.py                                --
+├── pics                                        --
+│   └── ...                                     --
+├── plugins                                     --
+│   ├── neovim                                  -- neovim extension for lsp
+│   │   ├── lsp.lua                             --
+│   │   └── readme.md                           --
+│   └── vscode                                  -- vscode extension for lsp
+│       ├── package.json                        --
+│       ├── package-lock.json                   --
+│       ├── pics                                --
+│       │   └── icon.png                        --
+│       ├── README.md                           --
+│       ├── src                                 --
+│       │   └── extension.ts                    --
+│       └── tsconfig.json                       --
+└── README.md                                   --
+```
+
+
 * [安装](#安装)
 * [Feature List](#feature-list)
 * [Intc Use Case](#intc-use-case)
@@ -66,10 +127,11 @@ pip install .
 
 * neovim
 
-`neovim`功能强大且易于扩展，社区已经对`LSP`提供了非常友好的支持，具体参考`plugins/neovim`
+`neovim`功能强大且易于扩展，社区已经对`LSP`提供了非常友好的支持，具体参考[nvim config](plugins/neovim)
 
 * vscode
-  `vscode`也可以通过安装`intc-lsp`对应的插件来获取`lsp`的支持，具体参考 `plugins/vscode`
+
+`vscode`也可以通过安装`intc-lsp`对应的插件来获取`lsp`的支持，具体参考 [vscode extension](plugins/vscode)
 
 * 其他IDE与编辑器
 
