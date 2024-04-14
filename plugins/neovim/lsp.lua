@@ -7,13 +7,10 @@ configs.intc_lsp = {
 		cmd = { "intc-lsp" },
 
 		root_dir = function(fname)
-			local root = util.root_pattern(".intc.json*")(fname) -- or util.path.dirname(fname)
-			if root == vim.g.HOME_PATH or root == nil then
-				return nil
-			end
+			local root = util.root_pattern(".intc.json*")(fname)
 			return root
 		end,
-		filetypes = { "jsonc", "yaml", "hjson", "json", "yml" },
+		filetypes = { "jsonc", "hjson", "json" },
 		single_file_support = true,
 	},
 	docs = {

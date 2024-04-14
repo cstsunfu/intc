@@ -17,7 +17,7 @@ A Python Config Manager for Humans
 <h4 align="center">
     <p>
         <b>简体中文</b> |
-        <a href="https://github.com/cstsunfu/dlk/blob/main/README_en.md">English</a>
+        <a href="https://github.com/cstsunfu/intc/blob/main/README_en.md">English</a>
     </p>
 </h4>
 
