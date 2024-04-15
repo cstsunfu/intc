@@ -133,7 +133,9 @@ pip install .
 
 * VSCode
 
-`VSCode` can also support `LSP` by installing the corresponding plugin for `intc-lsp`. Refer to [vscode extension](plugins/vscode) for specific instructions.
+`VSCode` can also support `LSP` by installing the corresponding plugin for `intc-lsp`. Search `intc-lsp` and install at `VSCode Extensions Market`
+
+![vsc plugin](./pics/vsc_plugin.png)
 
 * Other IDEs and Editors
 

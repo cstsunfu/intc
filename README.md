@@ -131,7 +131,8 @@ pip install .
 
 * vscode
 
-`vscode`也可以通过安装`intc-lsp`对应的插件来获取`lsp`的支持，具体参考 [vscode extension](plugins/vscode)
+`vscode`也可以通过安装`intc-lsp`对应的插件来获取`lsp`的支持，`vscode`插件市场搜索`intc-lsp`进行安装
+![vsc plugin](./pics/vsc_plugin.png)
 
 * 其他IDE与编辑器
 
