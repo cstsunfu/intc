@@ -6,12 +6,11 @@
 A Python Config Manager for Humans
 </p>
 
-
-<div style="text-align:center">
-<span style="width:70%;display:inline-block">
-
-![main](./pics/vsc_main.png)
+<div style="display:inline-block">
+  <img src="./pics/vscode_intc.gif" alt="vscode" width="412px">
+  <img src="./pics/nvim_intc.gif" alt="nvim" width="412px">
 </div>
+
 
 <h4 align="center">
     <p>
@@ -482,67 +481,37 @@ Json Schema Output:
     "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
-### Intc-LSP
+### Intc-LSP(left vscode, right nvim)
 #### Hover Document
 
-<div style="text-align:center">
-<span style="width:47%;display:inline-block">
-
-![nvim hover](./pics/nvim_hover.png)
-
-</span>
-<span style="width:47%;display:inline-block">
-
-![vsc hover](./pics/vsc_hover.png)
-
-</span>
+<div style="display:inline-block">
+  <img src="./pics/vsc_hover.png" alt="vscode" width="412px">
+  <img src="./pics/nvim_hover.png" alt="nvim" width="412px">
 </div>
 
 #### Diagnostic
-
-<div style="text-align:center">
-<span style="width:47%;display:inline-block">
-
-![nvim diag](./pics/nvim_diag.png)
-
-</span>
-<span style="width:47%;display:inline-block">
-
-![vsc diag](./pics/vsc_diag.png)
-
-</span>
+<div style="display:inline-block">
+  <img src="./pics/vsc_diag.png" alt="vscode" width="412px">
+  <img src="./pics/nvim_diag.png" alt="nvim" width="412px">
 </div>
 
 #### Completion
-
-<div style="text-align:center">
-<span style="width:47%;display:inline-block">
-
-![nvim comp](./pics/nvim_comp.png)
-
-</span>
-<span style="width:47%;display:inline-block">
-
-![vsc comp](./pics/vsc_comp.png)
-
-</span>
+<div style="display:inline-block">
+  <img src="./pics/vsc_comp.png" alt="vscode" width="412px">
+  <img src="./pics/nvim_comp.png" alt="nvim" width="412px">
 </div>
 
 #### Goto/Peek Definition
-
-<div style="text-align:center">
-<span style="width:47%;display:inline-block">
-
-![nvim goto](./pics/nvim_goto.png)
-
-</span>
-<span style="width:47%;display:inline-block">
-
-![vsc goto](./pics/vsc_goto.png)
-
-</span>
+<div style="display:inline-block">
+  <img src="./pics/vsc_goto.png" alt="vscode" width="412px">
+  <img src="./pics/nvim_goto.png" alt="nvim" width="412px">
 </div>
 
 ## Used By
 
 [DLK](https://github.com/cstsunfu/dlk) is a deep learning development framework that provides one-stop training, prediction, deployment and display of PyTorch models (Intc was originally a component of DLK)
+
+
+## Related
+
+[Hydra](https://github.com/facebookresearch/hydra) Hydra is a framework for elegantly configuring complex applications. (`intc` is similar to `hydra`, but more powerful)
