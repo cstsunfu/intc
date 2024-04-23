@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-A Python Config Manager for Humans
+A Python Config Manager for Humans.
 </p>
 
 <div style="display:inline-block">
@@ -499,4 +499,8 @@ Json Schema Output:
 
 ## Related
 
-[Hydra](https://github.com/facebookresearch/hydra) Hydra is a framework for elegantly configuring complex applications. (`intc` is similar to `hydra`, but more powerful)
+[attrs](https://github.com/python-attrs/attrs) Python Classes Without Boilerplate. (the `dataclass` of `intc` is based `attrs`)
+
+[hydra](https://github.com/facebookresearch/hydra) Hydra is a framework for elegantly configuring complex applications. (`intc` is similar to `hydra` but more powerful)
+
+[pydantic](https://github.com/pydantic/pydantic) A tool for data validation using Python type hints. (`intc` provide the data validation and json schema too.)

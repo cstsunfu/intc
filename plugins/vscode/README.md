@@ -16,8 +16,8 @@ This extension help you to edit your config file(`json` or `jsonc`)
 
 ## Requires
 
-To use this extension
+1. You must install `intc` and `intc-lsp`, [check this](https://github.com/cstsunfu/intc)
 
-You must install `intc` and `intc-lsp`, [check this](https://github.com/cstsunfu/intc)
+2. Install this extension(`intc-lsp`) in the vscode extension marketplace
 
-and install `intc-lsp` in the vscode extension marketplace
+3. The vscode `python` extension(I guess as a python developer you already have it installed)
