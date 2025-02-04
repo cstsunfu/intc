@@ -829,6 +829,12 @@ class ModuleField(object):
             )
         return self.__child_module__[key]
 
+    def __deepcopy__(self, memo):
+        new_module = ModuleField(self.__child_data__)
+        new_module.__child_module__ = copy.deepcopy(self.__child_module__)
+        new_module.__uni_origin_keys_map__ = copy.deepcopy(self.__uni_origin_keys_map__)
+        return new_module
+
     def __update_unikeys__(self):
         self.__uni_origin_keys_map__ = UniModuleName(
             [f"@{key}" for key in self.__child_data__.keys()]

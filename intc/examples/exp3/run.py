@@ -2,7 +2,7 @@
 
 import json
 
-from src import BertEmbedding, ClsDecode, GloveEmbedding, Model
+from src.config import BertEmbedding, ClsDecode, GloveEmbedding, Model
 
 from intc import Parser, cregister, init_config
 

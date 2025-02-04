@@ -3,7 +3,6 @@
 # This source code is licensed under the Apache license found in the
 # LICENSE file in the root directory of this source tree.
 
-# FIXME: fix_trace only for segment error, and add the submodule index
 import copy
 import inspect
 import re
@@ -322,3 +321,73 @@ def parser_lambda_key_value_pair(
         }
     else:
         return {}
+
+
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end_of_word = False
+
+
+class TryTrie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, traces: list):
+        current_node = self.root
+        for token in traces:
+            if token not in current_node.children:
+                current_node.children[token] = TrieNode()
+            current_node = current_node.children[token]
+        current_node.is_end_of_word = True
+
+    def try_fix_traces(self, traces, fixed_traces, node):
+        """try search the traces in the trie"""
+        if not traces:
+            return fixed_traces
+        if traces and not node:
+            return None
+        token = traces[0]
+        traces = traces[1:]
+        all_possible_traces = []
+        if token in node.children:
+            one_possible_traces = self.try_fix_traces(
+                traces, fixed_traces + [token], node.children[token]
+            )
+            if one_possible_traces:
+                if all_possible_traces:
+                    raise ValueError(
+                        f"more than one possible traces: \none:\n{str(all_possible_traces[0])}\nother:\n{str(one_possible_traces)}"
+                    )
+                all_possible_traces.append(one_possible_traces)
+        elif token.startswith("@") or token.startswith("#"):
+            for child_token in node.children:
+                if len(child_token) > len(token) and (
+                    child_token.startswith(token) or child_token.endswith(token)
+                ):
+                    one_possible_traces = self.try_fix_traces(
+                        traces, fixed_traces + [child_token], node.children[child_token]
+                    )
+                    if one_possible_traces:
+                        if all_possible_traces:
+                            raise ValueError(
+                                f"more than one possible traces: \none:\n{str(all_possible_traces[0])}\nother:\n{str(one_possible_traces)}"
+                            )
+                        all_possible_traces.append(one_possible_traces)
+        else:
+            # skip current tree
+            for child_token in node.children:
+                one_possible_traces = self.try_fix_traces(
+                    [token] + traces,
+                    fixed_traces + [child_token],
+                    node.children[child_token],
+                )
+                if one_possible_traces:
+                    if all_possible_traces:
+                        raise ValueError(
+                            f"more than one possible traces: \none:\n{str(all_possible_traces[0])}\nother:\n{str(one_possible_traces)}"
+                        )
+                    all_possible_traces.append(one_possible_traces)
+        if all_possible_traces:
+            return all_possible_traces[0]
+        return None

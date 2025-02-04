@@ -14,6 +14,7 @@ from intc.loader import load_submodule
 from intc.register import cregister, ic_repo
 from intc.share import MISSING
 from intc.utils import (
+    TryTrie,
     do_update_config,
     fix_trace,
     parser_lambda_key_value_pair,
@@ -31,7 +32,12 @@ class Parser(object):
 
     """
 
-    def __init__(self, raw_config: Dict, module_type: str = "__root__"):
+    def __init__(
+        self,
+        raw_config: Dict,
+        module_type: str = "__root__",
+        update_config: Union[Dict, None] = None,
+    ):
         super(Parser, self).__init__()
         if not G.LOAD_SUBMODULE_DONE:
             load_submodule()
@@ -41,6 +47,8 @@ class Parser(object):
         if module_type == "_G":
             self.raw_config = copy.deepcopy(raw_config)
             return
+        if update_config:
+            self.raw_config = self._try_update_config(raw_config, update_config)
 
         if module_type == "__root__":
             self.root = True
@@ -104,6 +112,50 @@ class Parser(object):
 
         # search only for module level
         self.search = self.raw_config.pop("_search", {})
+
+    def _try_update_config(self, base_config: Dict, update_config: Dict):
+        """try update the base_config with update_config
+
+        Args:
+            base_config: the base config
+            update_config: the update config
+
+        Returns:
+            updated config
+        """
+        full_traces = []
+
+        def _explore_traces(config, traces):
+            if not isinstance(config, dict) and not isinstance(config, list):
+                full_traces.append(traces)
+                return
+            if isinstance(config, dict):
+                for key, sub_config in config.items():
+                    _explore_traces(sub_config, traces + [key])
+            if isinstance(config, list):
+                for idx, sub_config in enumerate(config):
+                    _explore_traces(sub_config, traces + [idx])
+
+        _explore_traces(base_config, [])
+        trie = TryTrie()
+        for trace in full_traces:
+            trie.insert(trace)
+
+        fix_update_config = {}
+        for key, value in update_config.items():
+            new_key = trie.try_fix_traces(split_trace(key), [], trie.root)
+            if not new_key:
+                raise ValueError(f"cannot find the key: {key}")
+            cur_config = fix_update_config
+            pre_config = {}
+            for trace in new_key:
+                if trace not in cur_config:
+                    cur_config[trace] = {}
+                pre_config = cur_config
+                cur_config = cur_config[trace]
+            pre_config[new_key[-1]] = value
+        new_config = do_update_config(base_config, fix_update_config)
+        return new_config
 
     def parser_init(self, DataClass: Type[DataClassType] = Base) -> List[DataClassType]:
         """parser the config and check the config is valid
