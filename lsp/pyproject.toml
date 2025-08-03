@@ -22,7 +22,7 @@ dependencies = [
     "intc>=0.1, <0.2",
     "platformdirs>=4.2.0",
     "pygls>=1.1",
-    "tree-sitter>=0.21.1,<=0.22"
+    "tree-sitter>=0.21.1,<0.22"
 ]
 dynamic = ["version"]
 

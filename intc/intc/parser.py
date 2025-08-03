@@ -52,11 +52,10 @@ class Parser(object):
 
         if module_type == "__root__":
             self.root = True
-            _G = raw_config.pop("_G", {})
-            if not _G:
-                _G = {"__hold__": None}
-            raw_config = {"@__root__init__": raw_config, "_G": _G}
-        # if the module_type is like "@module_type@module_name#..." and "_base" is not in config, set the base as "module_name"
+            self._G = raw_config.pop("_G", {})
+            if not self._G:
+                self._G = {"__hold__": None}
+            raw_config = {"@__root__init__": raw_config, "_G": self._G}
         elif "@" in module_type and "_base" not in raw_config:
             _module_type_name = module_type.lstrip("@").split("@")
             assert len(_module_type_name) == 2
@@ -158,7 +157,7 @@ class Parser(object):
         return new_config
 
     def parser_init(self, DataClass: Type[DataClassType] = Base) -> List[DataClassType]:
-        """parser the config and check the config is valid
+        """parser the config, check the config is valid, and init the DataClass
 
         Args:
             parser_ref: whether parser the reference
@@ -244,6 +243,7 @@ class Parser(object):
         drop_root_return_list = []
         for config in return_list:
             drop_root_config = config.pop("@__root__init__", {})
+            drop_root_config["_G"] = self._G
             drop_root_return_list.append(drop_root_config)
         return drop_root_return_list
 

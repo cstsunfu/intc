@@ -7,6 +7,7 @@ from intc.config import (
     Base,
     BoolField,
     DictField,
+    EnumField,
     FloatField,
     IntField,
     ListField,

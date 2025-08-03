@@ -118,7 +118,7 @@ def cli() -> None:
                 filename=args.log_file,
                 mode="w",
                 encoding="utf8",
-                maxBytes=5 * 1024 * 1024,
+                maxBytes=1 * 1024 * 1024,
             )
             file_formatter = logging.Formatter(
                 fmt="%(asctime)s - %(levelname)s - %(name)s - %(message)s",

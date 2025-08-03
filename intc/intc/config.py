@@ -79,9 +79,11 @@ class BasicCheck(object):
             if options is None
             else set(
                 [
-                    json.dumps(o, sort_keys=True)
-                    if (isinstance(o, dict) or isinstance(o, list))
-                    else o
+                    (
+                        json.dumps(o, sort_keys=True)
+                        if (isinstance(o, dict) or isinstance(o, list))
+                        else o
+                    )
                     for o in options
                 ]
             )
@@ -96,9 +98,11 @@ class BasicCheck(object):
             if additions is None
             else set(
                 [
-                    json.dumps(a, sort_keys=True)
-                    if (isinstance(a, dict) or isinstance(a, list))
-                    else a
+                    (
+                        json.dumps(a, sort_keys=True)
+                        if (isinstance(a, dict) or isinstance(a, list))
+                        else a
+                    )
                     for a in additions
                 ]
             )
@@ -639,7 +643,7 @@ def AnyField(
 
 
 def ListField(
-    value: List,
+    value: Union[List, str] = MISSING,
     help: str = "the list field",
     suggestions: Optional[List[List]] = None,
     additions: Optional[List[Any]] = None,
@@ -693,7 +697,7 @@ def ListField(
 
 
 def DictField(
-    value: Dict,
+    value: Union[Dict, str] = MISSING,
     help: str = "the dict field",
     suggestions: Optional[List[Dict]] = None,
     additions: Optional[List[Dict]] = None,
@@ -1018,6 +1022,9 @@ class IntCMeta(type):
         return protected_class
 
 
+BaseType = TypeVar("BaseType", bound="Base")
+
+
 @define
 class Base(metaclass=IntCMeta):
     __meta__ = {}
@@ -1032,7 +1039,7 @@ class Base(metaclass=IntCMeta):
     submodule = SubModule({})
 
     @classmethod
-    def _from_dict(cls, config: Dict = {}) -> "Base":
+    def _from_dict(cls: Type[BaseType], config: Dict = {}) -> BaseType:
         new_config = {}
         for key in config:
             if key in {"_base", "_name", "_search", "_G", "_anchor"}:
@@ -1165,10 +1172,7 @@ class Base(metaclass=IntCMeta):
         return getattr(self, key)
 
 
-DataClassType = TypeVar("DataClassType")
-
-
-def init_config(config, DataClass: Type[DataClassType] = Base) -> DataClassType:
+def init_config(config, DataClass: Type[BaseType] = Base) -> BaseType:
     """ """
     for key in ["_G", "_search", "_anchor"]:
         config.pop(key, "")

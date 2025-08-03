@@ -7,7 +7,10 @@
             "vocab_size": 5000
         },
         "@embedding@bert": {
-            "hidden_size": 768
+            "hidden_size": "@lambda @_G.hid"
         }
+    },
+    "_G": {
+        "hid": 768
     }
 }
