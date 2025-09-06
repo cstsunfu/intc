@@ -8,7 +8,7 @@ import json
 from typing import Any, Callable, Dict, List, Type, TypeVar, Union
 
 import intc.share as G
-from intc.config import Base, DataClassType, init_config
+from intc.config import Base, BaseType, init_config
 from intc.exceptions import KeyNotFoundError, ParserConfigRepeatError, ValueError
 from intc.loader import load_submodule
 from intc.register import cregister, ic_repo
@@ -156,7 +156,7 @@ class Parser(object):
         new_config = do_update_config(base_config, fix_update_config)
         return new_config
 
-    def parser_init(self, DataClass: Type[DataClassType] = Base) -> List[DataClassType]:
+    def parser_init(self, DataClass: Type[BaseType] = Base) -> List[BaseType]:
         """parser the config, check the config is valid, and init the DataClass
 
         Args:

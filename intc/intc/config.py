@@ -193,10 +193,6 @@ class NumConvert(BasicCheck):
 
     def __call__(self, value):
         check_value, check_status = self.basic_check(value)
-        if value == -2:
-            print(value)
-            print(check_value)
-            print(check_status)
         if check_status == CheckStatus.SKIP:
             return check_value
         try:
@@ -260,7 +256,7 @@ class StrConvert(BasicCheck):
         try:
             value = str(value)
         except Exception as e:
-            raise ValueTypeError(f"Cannot convert '{value}' to int. {self.meta_str}")
+            raise ValueTypeError(f"Cannot convert '{value}' to string. {self.meta_str}")
         if self.min_len is not None or self.max_len is not None:
             str_len = len(value)
             if self.min_len is not None and str_len < self.min_len:
@@ -983,8 +979,6 @@ class IntCMeta(type):
     Protect the class from using the protected name as parameter name
     """
 
-    _deliver_num = 0
-
     def __new__(cls, name, bases, attrs):
         reserved = {
             "_module_name",
@@ -1010,13 +1004,15 @@ class IntCMeta(type):
                 raise ValueTypeError(
                     f"submodule is reserved keyword and should be a `SubModule`"
                 )
-        if cls._deliver_num > 1:
+        is_base_class = not bases or (
+            len(bases) == 1 and bases[0] is object
+        )  # A heuristic
+        if not is_base_class:  # Or more simply if name != 'Base':
             for attribute in attrs:
                 if attribute in reserved:
                     raise AttrNameError(
                         f'{attribute} is in the protected set "{reserved}", you should not named the para as this name'
                     )
-        cls._deliver_num += 1
         protected_class = super().__new__(cls, name, bases, attrs)
         cls.__meta__ = {}
         return protected_class

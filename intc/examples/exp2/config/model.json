@@ -1,5 +1,8 @@
 {
     "@model@sub": {
-        "para1": 1
+        "para1": "@lambda @_G.lr"
+    },
+    "_G": {
+        "lr": 8
     }
 }
